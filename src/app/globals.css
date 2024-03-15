@@ -31,3 +31,15 @@ body {
     text-wrap: balance;
   }
 }
+
+/* SIGNUP PAGE  */
+
+.main_signup {
+  background: white;
+  margin-top: 40px;
+  border-radius: 10px;
+  color:gray ;
+}
+.main_signup  button  {
+  background-origin: blue;
+}
