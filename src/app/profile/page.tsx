@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { useState } from "react";
 
 function Copyright() {
   return (
@@ -24,18 +25,23 @@ function Copyright() {
 }
 
 export default function ProfilePage() {
-
   const router = useRouter();
+  const [data, setData] = useState("nothing");
 
   const onLogoutHandler = async () => {
     try {
       const response = await axios.get("/api/users/logout");
       toast.success("Logout successful");
-      router.push('/login')
+      router.push("/login");
     } catch (error) {
       console.log(error.message);
       toast.error(error.message);
     }
+  };
+
+  const getUserDetails = async () => {
+    const res = await axios.get("/api/users/me");
+    setData(res.data.data._id);
   };
 
   return (
@@ -51,6 +57,13 @@ export default function ProfilePage() {
         <Typography variant="h2" component="h1" gutterBottom>
           Profile Page
         </Typography>
+        <h2 style={{background:'green'}}>
+          {data === "nothing" ? (
+            "Nothing"
+          ) : (
+            <Link href={`/profile/${data}`}>{data}</Link>
+          )}
+        </h2>
         <Typography variant="h5" component="h2" gutterBottom>
           {"Pin a footer to the bottom of the viewport."}
           {"The footer will move as the main element of the page grows."}
@@ -63,6 +76,14 @@ export default function ProfilePage() {
           color="error"
         >
           Logout
+        </Button>
+        <Button
+          onClick={getUserDetails}
+          sx={{ mt: 8, mb: 2, ml: "10" }}
+          variant="outlined"
+          color="success"
+        >
+          GetUser Details
         </Button>
       </Container>
       <Box
